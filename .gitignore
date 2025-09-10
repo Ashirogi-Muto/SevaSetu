@@ -1,0 +1,13 @@
+# Backend Specific (Python / FastAPI)
+/backend/venv/
+/backend/.env
+/backend/__pycache__/
+
+# Frontend Specific (Node.js / React)
+/node_modules/
+
+# General IDE / OS files
+.vscode/
+.idea/
+.DS_Store
+npm-debug.log

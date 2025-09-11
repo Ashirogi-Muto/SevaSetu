@@ -1,121 +1,112 @@
-# AI-Powered Civic Issue Reporting & Resolution Platform
+# AI-Powered Civic Issue Reporting Platform
 
-This repository contains the complete source code for the AI-Powered Civic Issue Reporting Platform, a full-stack application designed to streamline the process of reporting, classifying, and resolving municipal issues.
+![Status](https://img.shields.io/badge/Status-Backend%20MVP%20Complete-brightgreen)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.116-blue?logo=fastapi)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-orange?logo=tensorflow)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?logo=supabase)
 
-## Project Architecture
+This repository contains the complete backend source code for the AI-Powered Civic Issue Reporting Platform. The system is designed to allow citizens to report issues, have them automatically classified by a real AI model, and routed to the correct municipal department.
 
-The backend is built on a modern microservice architecture to ensure scalability and separation of concerns:
+## 🏛️ Project Architecture
 
-1.  **Main Backend API (on Port 8000):** A robust FastAPI server responsible for handling all user requests, managing data in the database, storing images, and providing analytics.
-2.  **AI Model Server (on Port 8001):** A dedicated FastAPI server that hosts the real TensorFlow/Keras computer vision model (MobileNetV2). It exposes a single endpoint for classifying images, allowing the AI logic to be updated independently.
+The backend is built on a modern microservice architecture to ensure scalability and a clear separation of concerns. This is a professional setup that allows the core application and the AI model to be developed and deployed independently.
 
 
 
 [Image of a microservice architecture diagram]
 
 
+1.  **Main Backend API (Port 8000):** A robust FastAPI server responsible for handling all client requests, managing data in the PostgreSQL database, handling image uploads to Supabase Storage, and providing analytics.
+2.  **AI Model Server (Port 8001):** A dedicated FastAPI server that hosts a real TensorFlow/Keras computer vision model (MobileNetV2). It exposes a single, specialized endpoint for classifying images.
+
 ---
 
-## Getting Started
+## 💻 Technology Stack
 
-Follow these instructions to get both backend services up and running on your local machine for development and testing.
+### Main Backend API (`/backend`)
+* **Framework:** Python 3.11+ with FastAPI
+* **Database:** PostgreSQL (managed by Supabase)
+* **Storage:** Supabase Storage for image uploads
+* **Security:** API Key authentication for protected endpoints
+* **Features:** Data validation (Enums), pagination, and filtering
+
+### AI Model Server (`/ai_model_server`)
+* **Framework:** Python 3.11+ with FastAPI
+* **Machine Learning Library:** TensorFlow & Keras
+* **Core Model:** MobileNetV2 (pre-trained on ImageNet)
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to get both backend services running on your local machine. **You will need two separate terminals.**
 
 ### Prerequisites
-
 * Python 3.10+
 * Git
-* A Supabase account for the database and file storage.
+* A Supabase account
 
----
+### Step 1: Main Backend API (Terminal 1)
 
-## 🚀 Step 1: Main Backend API Setup
-
-This is the core application that manages all data.
-
-1.  **Navigate to the Backend Directory:**
-    Open your first terminal and navigate to the backend folder:
+1.  **Navigate & Setup Environment:**
     ```bash
     cd F:\hackathon\backend
-    ```
-
-2.  **Create and Activate Virtual Environment:**
-    ```bash
-    # Create the environment
     python -m venv venv
-
-    # Activate on Windows
     venv\Scripts\activate
-    ```
-
-3.  **Install Dependencies:**
-    ```bash
     pip install -r requirements.txt
     ```
-
-4.  **Configure Environment Variables:**
-    Create a new file named `.env` in the `F:\hackathon\backend` directory. Copy the content below and fill in your actual credentials from Supabase.
+2.  **Configure Environment Variables:** Create a `.env` file in the `backend` folder and add your credentials:
     ```
     SUPABASE_URL=[https://your-project-url.supabase.co](https://your-project-url.supabase.co)
     SUPABASE_KEY=your-supabase-anon-key
     API_SECRET_KEY=a-very-secret-and-random-key-that-no-one-can-guess-12345
     AI_API_URL=[http://127.0.0.1:8001/api/classify](http://127.0.0.1:8001/api/classify)
     ```
-
-5.  **Run the Server:**
-    Your main backend will run on port **8000**.
+3.  **Run the Server (Port 8000):**
     ```bash
     python -m uvicorn main:app --reload --port 8000
     ```
-    Keep this terminal running.
+    *Keep this terminal running.*
 
----
+### Step 2: AI Model Server (Terminal 2)
 
-## 🧠 Step 2: AI Model Server Setup
-
-This service provides the intelligence for image classification.
-
-1.  **Navigate to the AI Server Directory:**
-    **Open a second, new terminal** and navigate to the AI server folder:
+1.  **Navigate & Setup Environment:**
     ```bash
+    # Open a NEW terminal
     cd F:\hackathon\ai_model_server
-    ```
-
-2.  **Create and Activate Virtual Environment:**
-    ```bash
-    # Create the environment
     python -m venv venv
-
-    # Activate on Windows
     venv\Scripts\activate
-    ```
-
-3.  **Install Dependencies:**
-    *Note: This step may take several minutes as TensorFlow is a large library.*
-    ```bash
     pip install -r requirements.txt
     ```
-
-4.  **Run the Server:**
-    Your AI server will run on port **8001**.
+2.  **Run the Server (Port 8001):**
     ```bash
     python -m uvicorn main:app --reload --port 8001
     ```
-    The first time you run this, it will download the MobileNetV2 model weights. You will see "Model loaded successfully" when it's ready. Keep this second terminal running.
+    *The first time you run this, it will download the MobileNetV2 model. Keep this terminal running.*
 
 ---
 
-## 🧪 Testing the Application
+## 🗺️ API Endpoints Overview
 
-With both servers running, you can now interact with the main backend API.
+With both servers running, interact with the main backend at `http://127.0.0.1:8000`.
 
-* **Interactive API Docs:** Open your browser to [**http://127.0.0.1:8000/docs**](http://127.0.0.1:8000/docs)
-* **Admin Map:** Open the `admin_map.html` file in your browser to see a live map of all reported issues.
+| Method | Endpoint                     | Description                                            | Secured? |
+| :----- | :--------------------------- | :----------------------------------------------------- | :------- |
+| `POST` | `/api/reports/`              | Submits a new report with images.                      | **Yes** |
+| `GET`  | `/api/reports/`              | Retrieves a paginated and filterable list of reports.  | No       |
+| `PUT`  | `/api/reports/{id}/status`   | Updates the status of a specific report.               | **Yes** |
+| `GET`  | `/api/analytics/`            | Gets summary statistics for the admin dashboard.       | No       |
 
-Remember to use the **Authorize** button in the docs and provide your `API_SECRET_KEY` to test the protected `POST` and `PUT` endpoints.
+* **Interactive Docs:** [**http://127.0.0.1:8000/docs**](http://127.0.0.1:8000/docs)
+* **Demo Map:** Open the `backend/admin_map.html` file in your browser.
 
-## 💻 Technology Stack
+---
 
-* **Backend API:** Python, FastAPI, API Key Security
-* **AI Service:** Python, FastAPI, TensorFlow/Keras, MobileNetV2
-* **Database & Storage:** PostgreSQL & File Storage via Supabase
-* **Admin Map Demo:** HTML5, Leaflet.js, JavaScript
+## 🛣️ Project Roadmap
+
+The backend is currently **feature-complete for the MVP demo**. The next major steps for the project are:
+
+-   **Frontend Development:** Building the citizen reporting portal and a full admin dashboard in Next.js.
+-   **AI Model Refinement:** The AI teammate will fine-tune the model and add the "translation layer" in `ai_model_server/main.py`.
+-   **Deployment:** Deploying the backend services to a cloud host (e.g., Railway/Render) and setting up a CI/CD pipeline with GitHub Actions.

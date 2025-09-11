@@ -1,96 +1,121 @@
-AI-Powered Civic Issue Reporting Platform - Backend Setup
-This guide provides detailed, step-by-step instructions to set up and run the initial FastAPI backend for our project.
+# AI-Powered Civic Issue Reporting & Resolution Platform
 
-Prerequisites
-Before you begin, ensure you have Python 3.7 or newer installed on your system. You can check your Python version by running this command in your terminal:
+This repository contains the complete source code for the AI-Powered Civic Issue Reporting Platform, a full-stack application designed to streamline the process of reporting, classifying, and resolving municipal issues.
 
-python --version
-# or
-python3 --version
+## Project Architecture
 
-Step 1: Set Up Your Project Directory
-First, create a dedicated folder for your backend project and navigate into it.
+The backend is built on a modern microservice architecture to ensure scalability and separation of concerns:
 
-# Create a new directory for the project
-mkdir civic-reporting-api
+1.  **Main Backend API (on Port 8000):** A robust FastAPI server responsible for handling all user requests, managing data in the database, storing images, and providing analytics.
+2.  **AI Model Server (on Port 8001):** A dedicated FastAPI server that hosts the real TensorFlow/Keras computer vision model (MobileNetV2). It exposes a single endpoint for classifying images, allowing the AI logic to be updated independently.
 
-# Move into the newly created directory
-cd civic-reporting-api
 
-Place the main.py and requirements.txt files you received into this civic-reporting-api folder.
 
-Step 2: Create and Activate a Virtual Environment
-It's a best practice to use a virtual environment for every Python project. This isolates the project's dependencies from your global Python installation.
+[Image of a microservice architecture diagram]
 
-# Create a virtual environment named 'venv'
-python3 -m venv venv
 
-# Activate the virtual environment
-# On macOS and Linux:
-source venv/bin/activate
+---
 
-# On Windows (Command Prompt):
-venv\Scripts\activate
+## Getting Started
 
-After activation, you will see (venv) at the beginning of your terminal prompt. This indicates that the virtual environment is active.
+Follow these instructions to get both backend services up and running on your local machine for development and testing.
 
-Step 3: Install the Required Packages
-Now, we'll install the packages listed in the requirements.txt file using pip, Python's package installer.
+### Prerequisites
 
-# The '-r' flag tells pip to install from a requirements file
-pip install -r requirements.txt
+* Python 3.10+
+* Git
+* A Supabase account for the database and file storage.
 
-This will install FastAPI, Uvicorn (our server), and Pydantic.
+---
 
-Step 4: Run the Development Server
-With the dependencies installed, you can now start the API server.
+## 🚀 Step 1: Main Backend API Setup
 
-# Command to run the server
-uvicorn main:app --reload
+This is the core application that manages all data.
 
-Let's break down this command:
+1.  **Navigate to the Backend Directory:**
+    Open your first terminal and navigate to the backend folder:
+    ```bash
+    cd F:\hackathon\backend
+    ```
 
-uvicorn: The ASGI server we installed.
+2.  **Create and Activate Virtual Environment:**
+    ```bash
+    # Create the environment
+    python -m venv venv
 
-main: Refers to the main.py file.
+    # Activate on Windows
+    venv\Scripts\activate
+    ```
 
-app: Refers to the FastAPI() instance we created inside main.py.
+3.  **Install Dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
---reload: This is a helpful flag for development. It automatically restarts the server whenever you save changes to your code.
+4.  **Configure Environment Variables:**
+    Create a new file named `.env` in the `F:\hackathon\backend` directory. Copy the content below and fill in your actual credentials from Supabase.
+    ```
+    SUPABASE_URL=[https://your-project-url.supabase.co](https://your-project-url.supabase.co)
+    SUPABASE_KEY=your-supabase-anon-key
+    API_SECRET_KEY=a-very-secret-and-random-key-that-no-one-can-guess-12345
+    AI_API_URL=[http://127.0.0.1:8001/api/classify](http://127.0.0.1:8001/api/classify)
+    ```
 
-After running the command, you should see output in your terminal indicating that the server is running, usually on http://127.0.0.1:8000.
+5.  **Run the Server:**
+    Your main backend will run on port **8000**.
+    ```bash
+    python -m uvicorn main:app --reload --port 8000
+    ```
+    Keep this terminal running.
 
-Step 5: Test the API Endpoint
-FastAPI provides free, interactive API documentation right out of the box. This is the best way to test our new endpoint.
+---
 
-Open your web browser and navigate to: http://127.0.0.1:8000/docs
+## 🧠 Step 2: AI Model Server Setup
 
-You will see the Swagger UI documentation. Find the POST /api/reports endpoint and click on it to expand it.
+This service provides the intelligence for image classification.
 
-Click the "Try it out" button on the right. This will make the "Request body" editable.
+1.  **Navigate to the AI Server Directory:**
+    **Open a second, new terminal** and navigate to the AI server folder:
+    ```bash
+    cd F:\hackathon\ai_model_server
+    ```
 
-You can now change the example JSON data. For instance, you could report a broken streetlight:
+2.  **Create and Activate Virtual Environment:**
+    ```bash
+    # Create the environment
+    python -m venv venv
 
-{
-  "description": "The streetlight at the corner of Oak and Maple street is flickering and seems broken.",
-  "latitude": 34.0522,
-  "longitude": -118.2437,
-  "category": "Broken Streetlight"
-}
+    # Activate on Windows
+    venv\Scripts\activate
+    ```
 
-Click the blue "Execute" button.
+3.  **Install Dependencies:**
+    *Note: This step may take several minutes as TensorFlow is a large library.*
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-Step 6: Check the Results
-In your browser: Scroll down, and you will see the server's response. A 201 Created status code means it was successful. The response body will contain the confirmation message and the data you sent.
+4.  **Run the Server:**
+    Your AI server will run on port **8001**.
+    ```bash
+    python -m uvicorn main:app --reload --port 8001
+    ```
+    The first time you run this, it will download the MobileNetV2 model weights. You will see "Model loaded successfully" when it's ready. Keep this second terminal running.
 
-In your terminal: Look at the terminal where the uvicorn server is running. You should see the report details printed to the console, just as we programmed in main.py!
+---
 
---- New Report Received ---
-Description: The streetlight at the corner of Oak and Maple street is flickering and seems broken.
-Location: (Lat: 34.0522, Lon: -118.2437)
-Category: Broken Streetlight
---------------------------
+## 🧪 Testing the Application
 
-Congratulations! You now have a working, validated API endpoint. This is the perfect foundation for our next steps.
+With both servers running, you can now interact with the main backend API.
 
-Our next goal will be to connect this endpoint to a Supabase PostgreSQL database so we can persist the reports that are submitted. Let me know when you're ready to tackle that!
+* **Interactive API Docs:** Open your browser to [**http://127.0.0.1:8000/docs**](http://127.0.0.1:8000/docs)
+* **Admin Map:** Open the `admin_map.html` file in your browser to see a live map of all reported issues.
+
+Remember to use the **Authorize** button in the docs and provide your `API_SECRET_KEY` to test the protected `POST` and `PUT` endpoints.
+
+## 💻 Technology Stack
+
+* **Backend API:** Python, FastAPI, API Key Security
+* **AI Service:** Python, FastAPI, TensorFlow/Keras, MobileNetV2
+* **Database & Storage:** PostgreSQL & File Storage via Supabase
+* **Admin Map Demo:** HTML5, Leaflet.js, JavaScript

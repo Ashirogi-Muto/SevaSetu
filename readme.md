@@ -1,112 +1,121 @@
-# AI-Powered Civic Issue Reporting Platform
+# SEVASETU Platform - Quick Start Guide
 
-![Status](https://img.shields.io/badge/Status-Backend%20MVP%20Complete-brightgreen)
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.116-blue?logo=fastapi)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-2.16-orange?logo=tensorflow)
-![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?logo=supabase)
+## 🚀 Quick Start (One Command)
 
-This repository contains the complete backend source code for the AI-Powered Civic Issue Reporting Platform. The system is designed to allow citizens to report issues, have them automatically classified by a real AI model, and routed to the correct municipal department.
+### First Time Setup
+```bash
+setup-sevasetu.bat
+```
+This will install all dependencies for backend, AI server, and both frontend portals.
 
-## 🏛️ Project Architecture
+### Start All Services
+```bash
+start-sevasetu.bat
+```
+This will start all 4 services in separate windows:
+- Backend API (Port 8000)
+- AI Model Server (Port 8001)
+- Admin Portal (Port 5173)
+- Citizen Portal (Port 5174)
 
-The backend is built on a modern microservice architecture to ensure scalability and a clear separation of concerns. This is a professional setup that allows the core application and the AI model to be developed and deployed independently.
+### Stop All Services
+```bash
+stop-sevasetu.bat
+```
+This will gracefully stop all running services.
 
+## 📋 Service URLs
 
+| Service | URL | Description |
+|---------|-----|-------------|
+| Backend API | http://localhost:8000 | Main API server |
+| API Documentation | http://localhost:8000/docs | Interactive API docs |
+| AI Model Server | http://localhost:8001 | AI classification service |
+| Admin Portal | http://localhost:5173 | Government admin dashboard |
+| Citizen Portal | http://localhost:5174 | Citizen reporting interface |
 
-[Image of a microservice architecture diagram]
+## 🔑 Default Credentials
 
+**Admin Portal Login:**
+- Email: `admin@sevasetu.gov`
+- Password: `admin123`
 
-1.  **Main Backend API (Port 8000):** A robust FastAPI server responsible for handling all client requests, managing data in the PostgreSQL database, handling image uploads to Supabase Storage, and providing analytics.
-2.  **AI Model Server (Port 8001):** A dedicated FastAPI server that hosts a real TensorFlow/Keras computer vision model (MobileNetV2). It exposes a single, specialized endpoint for classifying images.
+## 📁 Project Structure
 
----
+```
+f:\hackathon\
+├── backend/           # FastAPI main server
+├── ai_model_server/   # AI classification server  
+├── admin-portal/      # React admin dashboard
+├── citizen-portal/    # React citizen interface
+├── start-sevasetu.bat # Start all services
+├── stop-sevasetu.bat  # Stop all services
+└── setup-sevasetu.bat # Install dependencies
+```
 
-## 💻 Technology Stack
+## 🛠️ Manual Commands (if needed)
 
-### Main Backend API (`/backend`)
-* **Framework:** Python 3.11+ with FastAPI
-* **Database:** PostgreSQL (managed by Supabase)
-* **Storage:** Supabase Storage for image uploads
-* **Security:** API Key authentication for protected endpoints
-* **Features:** Data validation (Enums), pagination, and filtering
+### Backend API
+```bash
+cd f:\hackathon\backend
+python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
 
-### AI Model Server (`/ai_model_server`)
-* **Framework:** Python 3.11+ with FastAPI
-* **Machine Learning Library:** TensorFlow & Keras
-* **Core Model:** MobileNetV2 (pre-trained on ImageNet)
+### AI Model Server
+```bash
+cd f:\hackathon\ai_model_server
+python -m uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+```
 
----
+### Admin Portal
+```bash
+cd f:\hackathon\admin-portal
+npm run dev
+```
 
-## 🚀 Getting Started
+### Citizen Portal
+```bash
+cd f:\hackathon\citizen-portal
+npm run dev -- --port 5174
+```
 
-Follow these instructions to get both backend services running on your local machine. **You will need two separate terminals.**
+## ⚠️ Prerequisites
 
-### Prerequisites
-* Python 3.10+
-* Git
-* A Supabase account
+- Python 3.10+ installed and in PATH
+- Node.js 16+ installed and in PATH
+- Supabase account with database configured
+- Environment variables set in backend/.env
 
-### Step 1: Main Backend API (Terminal 1)
+## 🔧 Environment Setup
 
-1.  **Navigate & Setup Environment:**
-    ```bash
-    cd F:\hackathon\backend
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-2.  **Configure Environment Variables:** Create a `.env` file in the `backend` folder and add your credentials:
-    ```
-    SUPABASE_URL=[https://your-project-url.supabase.co](https://your-project-url.supabase.co)
-    SUPABASE_KEY=your-supabase-anon-key
-    API_SECRET_KEY=a-very-secret-and-random-key-that-no-one-can-guess-12345
-    AI_API_URL=[http://127.0.0.1:8001/api/classify](http://127.0.0.1:8001/api/classify)
-    ```
-3.  **Run the Server (Port 8000):**
-    ```bash
-    python -m uvicorn main:app --reload --port 8000
-    ```
-    *Keep this terminal running.*
+Make sure you have `.env` file in the backend directory with:
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_KEY=your_supabase_key
+API_SECRET_KEY=your_api_secret_key
+AI_API_URL=http://127.0.0.1:8001/api/classify
+```
 
-### Step 2: AI Model Server (Terminal 2)
+## 🎯 Features Included
 
-1.  **Navigate & Setup Environment:**
-    ```bash
-    # Open a NEW terminal
-    cd F:\hackathon\ai_model_server
-    python -m venv venv
-    venv\Scripts\activate
-    pip install -r requirements.txt
-    ```
-2.  **Run the Server (Port 8001):**
-    ```bash
-    python -m uvicorn main:app --reload --port 8001
-    ```
-    *The first time you run this, it will download the MobileNetV2 model. Keep this terminal running.*
+✅ **Citizen Portal**
+- Interactive location picker with maps
+- Report submission with image upload
+- User authentication and report tracking
 
----
+✅ **Admin Portal** 
+- Complete departments CRUD management
+- Location-based report filtering (10km radius)
+- Advanced filtering (status, category, department)
+- Analytics dashboard with KPIs
 
-## 🗺️ API Endpoints Overview
+✅ **Backend Features**
+- Department management API
+- Geographic distance filtering
+- AI-powered report classification
+- User authentication with JWT
 
-With both servers running, interact with the main backend at `http://127.0.0.1:8000`.
-
-| Method | Endpoint                     | Description                                            | Secured? |
-| :----- | :--------------------------- | :----------------------------------------------------- | :------- |
-| `POST` | `/api/reports/`              | Submits a new report with images.                      | **Yes** |
-| `GET`  | `/api/reports/`              | Retrieves a paginated and filterable list of reports.  | No       |
-| `PUT`  | `/api/reports/{id}/status`   | Updates the status of a specific report.               | **Yes** |
-| `GET`  | `/api/analytics/`            | Gets summary statistics for the admin dashboard.       | No       |
-
-* **Interactive Docs:** [**http://127.0.0.1:8000/docs**](http://127.0.0.1:8000/docs)
-* **Demo Map:** Open the `backend/admin_map.html` file in your browser.
-
----
-
-## 🛣️ Project Roadmap
-
-The backend is currently **feature-complete for the MVP demo**. The next major steps for the project are:
-
--   **Frontend Development:** Building the citizen reporting portal and a full admin dashboard in Next.js.
--   **AI Model Refinement:** The AI teammate will fine-tune the model and add the "translation layer" in `ai_model_server/main.py`.
--   **Deployment:** Deploying the backend services to a cloud host (e.g., Railway/Render) and setting up a CI/CD pipeline with GitHub Actions.
+✅ **Branding**
+- Complete SEVASETU branding across all portals
+- Government UX4G design standards
+- Responsive design for all devices

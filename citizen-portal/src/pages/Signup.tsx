@@ -74,14 +74,14 @@ const Signup = () => {
               <div className="flex items-center space-x-2">
                 <MapPin className="h-8 w-8 text-primary" />
                 <div className="text-left">
-                  <h1 className="text-xl font-bold">CityPulse</h1>
+                  <h1 className="text-xl font-bold">SEVASETU</h1>
                   <p className="text-sm text-muted-foreground">Citizen Portal</p>
                 </div>
               </div>
             </div>
             <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
             <CardDescription>
-              Join CityPulse to report and track civic issues in your community
+              Join SEVASETU to report and track civic issues in your community
             </CardDescription>
           </CardHeader>
           <CardContent>

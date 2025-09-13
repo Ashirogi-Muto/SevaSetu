@@ -28,7 +28,7 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
               <div className="flex items-center space-x-2">
                 <MapPin className="h-8 w-8 text-primary" />
                 <div>
-                  <h1 className="text-xl font-bold text-foreground">CityPulse</h1>
+                  <h1 className="text-xl font-bold text-foreground">SEVASETU</h1>
                   <p className="text-sm text-muted-foreground">Citizen Portal</p>
                 </div>
               </div>

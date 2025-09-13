@@ -3,19 +3,20 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
-import { Upload, MapPin, Send, ArrowLeft } from "lucide-react";
+import { Send, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
+import LocationPicker from "@/components/LocationPicker";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { submitNewReport } from "@/lib/api"; // Added this import
+import { submitNewReport } from "@/lib/api";
 
 const reportSchema = z.object({
   description: z.string().min(10, { message: "Description must be at least 10 characters." }).max(500, { message: "Description must be 500 characters or less." }),
-  latitude: z.coerce.number({ required_error: "Latitude is required." }).min(-90).max(90),
-  longitude: z.coerce.number({ required_error: "Longitude is required." }).min(-180).max(180),
+  latitude: z.number({ required_error: "Please select a location on the map." }).min(-90).max(90),
+  longitude: z.number({ required_error: "Please select a location on the map." }).min(-180).max(180),
   file: z.instanceof(FileList).optional()
     .refine(files => !files || files.length === 0 || files[0].size <= 5 * 1024 * 1024, `Max file size is 5MB.`)
     .refine(
@@ -32,37 +33,18 @@ const Report = () => {
     resolver: zodResolver(reportSchema),
     defaultValues: {
       description: "",
+      latitude: undefined,
+      longitude: undefined,
     },
   });
 
   const { formState: { isSubmitting } } = form;
 
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          form.setValue("latitude", parseFloat(position.coords.latitude.toFixed(6)));
-          form.setValue("longitude", parseFloat(position.coords.longitude.toFixed(6)));
-          toast({
-            title: "Location Obtained",
-            description: "Your current location has been filled in.",
-          });
-        },
-        (error) => {
-          toast({
-            title: "Location Error",
-            description: "Unable to get your location. Please enter manually.",
-            variant: "destructive",
-          });
-        }
-      );
-    } else {
-      toast({
-        title: "Geolocation Not Supported",
-        description: "Please enter your location manually",
-        variant: "destructive",
-      });
-    }
+  const handleLocationSelect = (lat: number, lng: number) => {
+    form.setValue("latitude", parseFloat(lat.toFixed(6)));
+    form.setValue("longitude", parseFloat(lng.toFixed(6)));
+    // Clear any existing location validation errors
+    form.clearErrors(["latitude", "longitude"]);
   };
 
   const onSubmit = async (values: z.infer<typeof reportSchema>) => {
@@ -144,46 +126,21 @@ const Report = () => {
                 />
                 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <FormLabel>Location Coordinates *</FormLabel>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={getCurrentLocation}
-                    >
-                      <MapPin className="h-4 w-4 mr-2" />
-                      <span>Use Current Location</span>
-                    </Button>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="latitude"
-                      render={({ field }) => (
-                        <FormItem>
-                           <FormLabel>Latitude</FormLabel>
-                           <FormControl>
-                              <Input type="number" step="any" placeholder="e.g., 40.712800" {...field} />
-                           </FormControl>
-                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="longitude"
-                      render={({ field }) => (
-                        <FormItem>
-                           <FormLabel>Longitude</FormLabel>
-                           <FormControl>
-                              <Input type="number" step="any" placeholder="e.g., -74.006000" {...field} />
-                           </FormControl>
-                           <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                  <FormLabel>Issue Location *</FormLabel>
+                  <FormDescription>
+                    Click on the map to pinpoint where the issue is located, or use "Use My Location" to automatically detect your current position.
+                  </FormDescription>
+                  <LocationPicker 
+                    onLocationSelect={handleLocationSelect}
+                    initialPosition={form.watch("latitude") && form.watch("longitude") ? 
+                      [form.watch("latitude"), form.watch("longitude")] : undefined
+                    }
+                  />
+                  {(form.formState.errors.latitude || form.formState.errors.longitude) && (
+                    <p className="text-sm font-medium text-destructive">
+                      {form.formState.errors.latitude?.message || form.formState.errors.longitude?.message}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex justify-end gap-3 pt-4">

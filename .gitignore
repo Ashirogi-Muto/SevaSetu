@@ -2,12 +2,99 @@
 /backend/venv/
 /backend/.env
 /backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# AI Model Server
+/ai_model_server/venv/
+/ai_model_server/.env
+/ai_model_server/__pycache__/
+/ai_model_server/models/
+*.h5
+*.hdf5
+*.pkl
+*.joblib
 
 # Frontend Specific (Node.js / React)
 /node_modules/
+/admin-portal/.env
+/admin-portal/.env.local
+/citizen-portal/.env
+/citizen-portal/.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/admin-portal/dist/
+/citizen-portal/dist/
+/admin-portal/build/
+/citizen-portal/build/
+.vite/
 
-# General IDE / OS files
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# IDE / Editor files
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# OS files
 .DS_Store
-npm-debug.log
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Deployment
+.vercel
+.netlify
+
+# Security - Never commit these
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets.json
+config.json
+
+# Environment backup
+env_backup/

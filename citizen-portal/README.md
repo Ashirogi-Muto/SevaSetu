@@ -1,73 +1,73 @@
-# Welcome to your Lovable project
+# SEVASETU - Citizen Portal
 
-## Project info
+Citizen-facing application for the AI-Powered Civic Issue Reporting Platform.
 
-**URL**: https://lovable.dev/projects/e06aa0f6-f14f-4874-bd65-46ac9eadd7f6
+## About SEVASETU
 
-## How can I edit this code?
+SEVASETU is a comprehensive civic issue reporting platform that enables citizens to easily report municipal issues such as infrastructure problems, safety concerns, and public service issues.
 
-There are several ways of editing your application.
+## Getting Started
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/e06aa0f6-f14f-4874-bd65-46ac9eadd7f6) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+To run the citizen portal locally:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Step 1: Navigate to the citizen portal directory
+cd citizen-portal
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Step 2: Install dependencies
+npm install
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 3: Start the development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The citizen portal will be available at `http://localhost:5174`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Features
 
-**Use GitHub Codespaces**
+- **Issue Reporting**: Easy-to-use form for reporting civic issues
+- **Interactive Map**: Select exact location of issues on a map
+- **Photo Upload**: Attach images to reports for better documentation
+- **Report Tracking**: Track the status of submitted reports
+- **User Authentication**: Secure login and registration
+- **Category Selection**: Organized issue categories (Infrastructure, Safety, Public Service, Other)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Technologies Used
 
-## What technologies are used for this project?
+- **Frontend**: React 18 with TypeScript
+- **Build Tool**: Vite
+- **UI Components**: shadcn/ui + Radix UI
+- **Styling**: Tailwind CSS
+- **Maps**: Leaflet with React-Leaflet
+- **Forms**: React Hook Form with Zod validation
+- **State Management**: TanStack Query
+- **Routing**: React Router DOM
 
-This project is built with:
+## Configuration
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Ensure your environment variables are set up correctly:
 
-## How can I deploy this project?
+```
+VITE_API_URL=http://localhost:8000
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_key
+```
 
-Simply open [Lovable](https://lovable.dev/projects/e06aa0f6-f14f-4874-bd65-46ac9eadd7f6) and click on Share -> Publish.
+## Development
 
-## Can I connect a custom domain to my Lovable project?
+For development with hot reload:
+```sh
+npm run dev
+```
 
-Yes, you can!
+For production build:
+```sh
+npm run build
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## Integration
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This citizen portal connects to:
+- Backend API (FastAPI) running on port 8000
+- AI Model Server for automated issue categorization
+- Supabase for data storage and user authentication

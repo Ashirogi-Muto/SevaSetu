@@ -1,4 +1,4 @@
-# SEVASETU MVP Development Tasks
+# SEWASETU MVP Development Tasks
 
 ## 🎯 Priority Tasks for Admin Portal & Citizen Portal Integration
 
@@ -52,8 +52,8 @@
 
 ### **Phase 2: Polish & Integration (Week 3-4 Focus)**
 
-#### 🎨 Branding Updates (SEVASETU)
-- [ ] Update all references from CityPulse to SEVASETU
+#### 🎨 Branding Updates (SEWASETU)
+- [ ] Update all references from CityPulse to SEWASETU
 - [ ] Update login page branding
 - [ ] Update headers and navigation
 - [ ] Update page titles and meta information

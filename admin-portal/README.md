@@ -1,10 +1,10 @@
-# SEVASETU - Admin Portal
+# SEWASETU - Admin Portal
 
 Admin dashboard for the AI-Powered Civic Issue Reporting Platform.
 
-## About SEVASETU
+## About SEWASETU
 
-SEVASETU is a comprehensive civic issue reporting platform that allows citizens to report municipal issues and enables administrators to track, manage, and resolve these issues efficiently.
+SEWASETU is a comprehensive civic issue reporting platform that allows citizens to report municipal issues and enables administrators to track, manage, and resolve these issues efficiently.
 
 ## Getting Started
 

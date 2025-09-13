@@ -27,7 +27,7 @@ export default function Login() {
     mutationFn: login,
     onSuccess: (data) => {
       toast.success("Login successful", {
-        description: "Welcome to SEVASETU Admin Portal",
+        description: "Welcome to SEWASETU Admin Portal",
       });
       localStorage.setItem("auth_token", data.access_token);
       navigate("/");
@@ -51,7 +51,7 @@ export default function Login() {
           <div className="flex items-center justify-center mb-4">
             <Shield className="h-12 w-12 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground">SEVASETU</h1>
+          <h1 className="text-3xl font-bold text-foreground">SEWASETU</h1>
           <p className="text-lg text-muted-foreground">Admin Portal</p>
         </div>
         <Card>

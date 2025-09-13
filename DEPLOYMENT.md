@@ -1,4 +1,4 @@
-# SEVASETU Platform - Deployment Guide
+# SEWASETU Platform - Deployment Guide
 
 ## 🚀 GitHub Deployment Readiness
 
@@ -107,8 +107,8 @@ npm install
 
 ```bash
 # Use the provided batch files (Windows)
-setup-sevasetu.bat
-start-sevasetu.bat
+setup-sewasetu.bat
+start-sewasetu.bat
 
 # Or manually start each service
 ```

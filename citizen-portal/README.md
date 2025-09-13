@@ -1,10 +1,10 @@
-# SEVASETU - Citizen Portal
+# SEWASETU - Citizen Portal
 
 Citizen-facing application for the AI-Powered Civic Issue Reporting Platform.
 
-## About SEVASETU
+## About SEWASETU
 
-SEVASETU is a comprehensive civic issue reporting platform that enables citizens to easily report municipal issues such as infrastructure problems, safety concerns, and public service issues.
+SEWASETU is a comprehensive civic issue reporting platform that enables citizens to easily report municipal issues such as infrastructure problems, safety concerns, and public service issues.
 
 ## Getting Started
 

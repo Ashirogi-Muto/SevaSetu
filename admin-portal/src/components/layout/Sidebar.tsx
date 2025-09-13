@@ -40,7 +40,7 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
           <div className="flex items-center space-x-2 overflow-hidden">
             <Shield className="h-8 w-8 text-primary flex-shrink-0" />
             <div>
-              <h1 className="text-lg font-semibold text-foreground truncate">SEVASETU</h1>
+              <h1 className="text-lg font-semibold text-foreground truncate">SEWASETU</h1>
               <p className="text-xs text-muted-foreground">Admin Portal</p>
             </div>
           </div>

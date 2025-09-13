@@ -1,14 +1,19 @@
-# SevaSetu - Civic Issue Reporting Platform
+# SewaSetu - Civic Issue Reporting Platform
 
-SevaSetu is a modern, full-stack application designed to bridge the gap between citizens and local authorities. It empowers users to report civic issues (like potholes, streetlight outages, or waste management problems), which are then intelligently classified and routed to the appropriate municipal departments for resolution.
+SewaSetu is a modern, full-stack application designed to bridge the gap between citizens and local authorities. It empowers users to report civic issues (like potholes, streetlight outages, or waste management problems), which are then intelligently classified and routed to the appropriate municipal departments for resolution.
 
 ## 🚀 Live Demo
 
 You can access the live, deployed application here:
 
-**Citizen Portal:** https://seva-setu-beryl.vercel.app/
+* **Citizen Portal**: [https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app](https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app)
+* **Admin Portal**: [https://admin-portal-git-main-idkanythinghelps-projects.vercel.app](https://admin-portal-git-main-idkanythinghelps-projects.vercel.app)
 
-**Admin Portal:** https://seva-setu-zmqj.vercel.app/
+You can access the live, deployed application here:
+
+**Citizen Portal:** https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app
+
+**Admin Portal:** https://admin-portal-git-main-idkanythinghelps-projects.vercel.app
 
 ## ✨ Features Included
 
@@ -30,7 +35,7 @@ You can access the live, deployed application here:
 - User authentication with JWT
 
 ### ✅ Branding & UX
-- Complete SEVASETU branding across all portals
+- Complete SEWASETU branding across all portals
 - Government UX4G design standards
 - Responsive design for all devices
 
@@ -53,9 +58,9 @@ You can access the live, deployed application here:
 ├── ai_model_server/   # AI classification server
 ├── admin-portal/      # React admin dashboard
 ├── citizen-portal/    # React citizen interface
-├── setup-sevasetu.bat # (Windows) Install all dependencies
-├── start-sevasetu.bat # (Windows) Start all services
-└── stop-sevasetu.bat  # (Windows) Stop all services
+├── setup-sewasetu.bat # (Windows) Install all dependencies
+├── start-sewasetu.bat # (Windows) Start all services
+└── stop-sewasetu.bat  # (Windows) Stop all services
 ```
 
 ## ⚙️ Getting Started: Local Setup
@@ -74,8 +79,8 @@ Follow these steps to run the entire platform on your local machine.
 First, clone the repository and set up your environment variables.
 
 ```bash
-git clone https://github.com/your-username/SevaSetu.git
-cd SevaSetu
+git clone https://github.com/your-username/SewaSetu.git
+cd SewaSetu
 ```
 
 You must create a `.env` file in the `/backend` directory with your Supabase URL/Key, a secret key, and the local AI server URL.
@@ -96,17 +101,17 @@ Convenience scripts are provided for a one-command setup.
 
 **Install all dependencies:**
 ```bash
-setup-sevasetu.bat
+setup-sewasetu.bat
 ```
 
 **Start all services:**
 ```bash
-start-sevasetu.bat
+start-sewasetu.bat
 ```
 
 **Stop all services:**
 ```bash
-stop-sevasetu.bat
+stop-sewasetu.bat
 ```
 
 #### Manual Setup (All Platforms)

@@ -64,6 +64,6 @@ echo ====================================
 echo   Setup completed successfully!
 echo ====================================
 echo.
-echo You can now run: start-sevasetu.bat
+echo You can now run: start-sewasetu.bat
 echo.
 pause

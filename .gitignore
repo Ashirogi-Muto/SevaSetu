@@ -1,59 +1,3 @@
-# Backend Specific (Python / FastAPI)
-/backend/venv/
-/backend/.env
-/backend/__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# AI Model Server
-/ai_model_server/venv/
-/ai_model_server/.env
-/ai_model_server/__pycache__/
-/ai_model_server/models/
-*.h5
-*.hdf5
-*.pkl
-*.joblib
-
-# Frontend Specific (Node.js / React)
-/node_modules/
-/admin-portal/.env
-/admin-portal/.env.local
-/citizen-portal/.env
-/citizen-portal/.env.local
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/admin-portal/dist/
-/citizen-portal/dist/
-/admin-portal/build/
-/citizen-portal/build/
-.vite/
-
-# Environment files
-.env
-.env.local
-.env.development
-.env.production
-.env.test
-
 # IDE / Editor files
 .vscode/
 .idea/
@@ -61,7 +5,7 @@ yarn-error.log*
 *.swo
 *~
 
-# OS files
+# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -70,22 +14,49 @@ yarn-error.log*
 ehthumbs.db
 Thumbs.db
 
+# Environment files - VERY IMPORTANT
+.env
+.env.*
+!.env.example
+env_backup/
+
 # Logs
 logs/
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Temporary files
-*.tmp
-*.temp
+# --- Backend Specific (Python / FastAPI) ---
+/backend/venv/
+/backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+build/
+dist/
+*.egg-info/
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
+# --- AI Model Server Specific ---
+/ai_model_server/venv/
+/ai_model_server/__pycache__/
+/ai_model_server/models/
+*.h5
+*.hdf5
+*.pkl
+*.joblib
 
-# Deployment
-.vercel
-.netlify
+# --- Frontend Specific (Node.js / React) ---
+/node_modules/
+/admin-portal/dist/
+/admin-portal/build/
+/citizen-portal/dist/
+/citizen-portal/build/
+.vite/
+
+# Deployment artifacts
+.vercel/
+.netlify/
 
 # Security - Never commit these
 *.pem
@@ -95,6 +66,3 @@ logs/
 *.pfx
 secrets.json
 config.json
-
-# Environment backup
-env_backup/

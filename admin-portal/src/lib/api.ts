@@ -63,7 +63,9 @@ export const apiFetch = async <T>(endpoint: string, options: RequestInit = {}): 
   }
 
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
+    const fullUrl = `${baseUrl}${endpoint}`;
+    
+    const response = await fetch(fullUrl, {
       ...options,
       headers,
     });
@@ -77,9 +79,9 @@ export const apiFetch = async <T>(endpoint: string, options: RequestInit = {}): 
       return null as T;
     }
 
-    return await response.json();
+    const result = await response.json();
+    return result;
   } catch (error) {
-    console.error("API Fetch Error:", error);
     toast.error("API Error", {
       description: error instanceof Error ? error.message : "An unexpected error occurred.",
     });
@@ -93,6 +95,18 @@ export const login = async (credentials: { email: string; password: string }): P
     method: "POST",
     body: JSON.stringify(credentials),
   });
+};
+
+export const logout = async (): Promise<{ message: string }> => {
+  try {
+    return await apiFetch<{ message: string }>("/api/auth/logout", {
+      method: "POST",
+    });
+  } catch (error) {
+    // Even if API call fails, we still clear local data
+    console.warn("Logout API call failed, but proceeding with local cleanup", error);
+    return { message: "Logged out locally" };
+  }
 };
 
 // Dashboard API functions
@@ -205,7 +219,13 @@ export const fetchAnalytics = async (): Promise<AnalyticsData> => {
 
 // Departments API functions
 export const fetchDepartments = async (): Promise<Department[]> => {
-  return apiFetch<Department[]>("/api/departments");
+  try {
+    const result = await apiFetch<Department[]>("/api/departments");
+    return result;
+  } catch (error) {
+    console.error('Error in fetchDepartments:', error);
+    throw error;
+  }
 };
 
 export const fetchDepartment = async (id: number): Promise<Department> => {

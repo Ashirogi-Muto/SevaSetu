@@ -15,8 +15,9 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
   const isAuthenticated = !location.pathname.includes('/login') && !location.pathname.includes('/signup');
 
   const handleLogout = () => {
-    // In a real app, clear auth tokens here
-    navigate('/'); // Navigate to login page on logout
+    // Clear authentication token
+    localStorage.removeItem('authToken');
+    navigate('/login'); // Navigate to login page on logout
   };
 
   return (
@@ -26,7 +27,7 @@ const Layout = ({ children, showHeader = true }: LayoutProps) => {
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <MapPin className="h-8 w-8 text-primary" />
+                <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-8 w-8" />
                 <div>
                   <h1 className="text-xl font-bold text-foreground">SEWASETU</h1>
                   <p className="text-sm text-muted-foreground">Citizen Portal</p>

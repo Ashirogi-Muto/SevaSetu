@@ -5,5 +5,5 @@ export type Report = {
   status: 'Pending' | 'In Progress' | 'Resolved';
   submittedDate: string; // ISO 8601
   imageUrl?: string;
-  location: { latitude: number; longitude: number };
+  location?: { latitude: number; longitude: number }; // Made optional
 }

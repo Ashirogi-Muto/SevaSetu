@@ -1,4 +1,4 @@
-import { Bell, User } from "lucide-react";
+import { Bell, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,12 +9,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { logout } from "@/lib/api";
 
 interface HeaderProps {
   title: string;
 }
 
 export function Header({ title }: HeaderProps) {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      // Call logout API (even if it fails, we'll proceed with local cleanup)
+      await logout();
+    } catch (error) {
+      console.warn("Logout API call failed, proceeding with local cleanup", error);
+    }
+    
+    // Clear authentication data
+    localStorage.removeItem("auth_token");
+    
+    // Clear any other cached data
+    localStorage.clear();
+    
+    // Show logout confirmation
+    toast.success("Logged out successfully", {
+      description: "You have been logged out of the admin portal",
+    });
+    
+    // Navigate to login page
+    navigate("/login");
+  };
   return (
     <header className="nav-header flex items-center justify-between">
       <div>
@@ -44,17 +71,17 @@ export function Header({ title }: HeaderProps) {
               </Avatar>
               <div className="text-left hidden sm:block">
                 <p className="text-sm font-medium">Admin User</p>
-                <p className="text-xs text-muted-foreground">admin@sevasetu.gov</p>
+                <p className="text-xs text-muted-foreground">admin@sewasetu.gov</p>
               </div>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Admin Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="text-destructive focus:text-destructive">
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

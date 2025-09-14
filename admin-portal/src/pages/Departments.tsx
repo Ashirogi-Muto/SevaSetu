@@ -47,6 +47,7 @@ import {
 export default function Departments() {
   const [departments, setDepartments] = useState<Department[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingDepartment, setEditingDepartment] = useState<Department | null>(null);
@@ -60,10 +61,17 @@ export default function Departments() {
   const loadDepartments = async () => {
     try {
       setLoading(true);
+      setError(null);
+      
       const data = await fetchDepartments();
       setDepartments(data);
     } catch (error) {
-      toast.error("Failed to load departments");
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      console.error('Failed to load departments:', error);
+      setError(errorMessage);
+      toast.error("Failed to load departments", {
+        description: errorMessage
+      });
     } finally {
       setLoading(false);
     }
@@ -140,6 +148,33 @@ export default function Departments() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
             <p className="text-muted-foreground">Loading departments...</p>
           </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <DashboardLayout title="Departments">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Card className="w-full max-w-md">
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <Building className="h-12 w-12 text-destructive mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Failed to Load Departments</h3>
+              <p className="text-muted-foreground text-center mb-4">
+                {error}
+              </p>
+              <div className="flex gap-2">
+                <Button onClick={loadDepartments} variant="outline">
+                  Try Again
+                </Button>
+                <Button onClick={() => setIsCreateOpen(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Department
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </DashboardLayout>
     );

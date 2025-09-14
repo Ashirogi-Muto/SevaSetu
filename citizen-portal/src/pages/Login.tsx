@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { MapPin, Eye, EyeOff } from "lucide-react";
+import { MapPin, Eye, EyeOff, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
@@ -32,6 +32,11 @@ const Login = () => {
   
   const { formState: { isSubmitting } } = form;
 
+  const handleSwitchToAdminPortal = () => {
+    // Navigate to admin portal live demo
+    window.location.href = 'https://admin-portal-git-main-idkanythinghelps-projects.vercel.app/login';
+  };
+
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
     try {
       await loginUser({
@@ -59,9 +64,9 @@ const Login = () => {
           <CardHeader className="text-center">
             <div className="flex justify-center mb-4">
               <div className="flex items-center space-x-2">
-                <MapPin className="h-8 w-8 text-primary" />
+                <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-8 w-8" />
                 <div className="text-left">
-                  <h1 className="text-xl font-bold">SEVASETU</h1>
+                  <h1 className="text-xl font-bold">SEWASETU</h1>
                   <p className="text-sm text-muted-foreground">Citizen Portal</p>
                 </div>
               </div>
@@ -120,6 +125,24 @@ const Login = () => {
                   Create Account
                 </Button>
               </p>
+            </div>
+            
+            {/* Portal Switcher */}
+            <div className="mt-4 pt-4 border-t">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground mb-3">
+                  Are you a government administrator?
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={handleSwitchToAdminPortal}
+                  className="w-full flex items-center justify-center space-x-2"
+                  size="sm"
+                >
+                  <Shield className="h-4 w-4" />
+                  <span>Switch to Admin Portal</span>
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>

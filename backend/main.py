@@ -197,7 +197,6 @@ class DepartmentResponse(BaseModel):
     id: int
     name: str
     email: str
-    created_at: datetime
 
 
 # --- 4. API Routers ---
@@ -424,9 +423,7 @@ departments_router = APIRouter(prefix="/api/departments", tags=["Departments"])
 def get_all_departments():
     """Get all departments sorted alphabetically by name."""
     response = supabase.table("departments").select("*").order("name").execute()
-    if not response.data:
-        return []
-    return response.data
+    return response.data or []
 
 @departments_router.get("/{department_id}", response_model=DepartmentResponse)
 def get_department(department_id: int):
@@ -508,6 +505,7 @@ def delete_department(department_id: int):
         raise HTTPException(status_code=500, detail="Failed to delete department.")
     
     return {"message": f"Department with ID {department_id} has been deleted successfully."}
+
 @dashboard_router.get("/", response_model=DashboardData)
 def get_dashboard_data():
     # Get recent reports (last 10)

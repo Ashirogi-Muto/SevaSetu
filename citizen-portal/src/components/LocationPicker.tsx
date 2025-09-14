@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,15 +51,34 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const { toast } = useToast();
+  
+  // Refs to prevent unnecessary re-renders and duplicate requests
+  const hasAutoTriedLocation = useRef(false);
+  const isRequestingLocation = useRef(false);
+  const errorTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleLocationSelect = useCallback((lat: number, lng: number) => {
     const newPosition: [number, number] = [lat, lng];
     setPosition(newPosition);
     onLocationSelect(lat, lng);
-    setLocationError(null);
-  }, [onLocationSelect]);
+    
+    // Clear any existing error when location is successfully selected
+    if (locationError) {
+      setLocationError(null);
+      // Clear error timeout if it exists
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+        errorTimeoutRef.current = null;
+      }
+    }
+  }, [onLocationSelect, locationError]);
 
   const getCurrentLocation = useCallback(() => {
+    // Prevent multiple simultaneous requests
+    if (isRequestingLocation.current || isLoadingLocation) {
+      return;
+    }
+
     if (!navigator.geolocation) {
       const error = "Geolocation is not supported by this browser.";
       setLocationError(error);
@@ -71,14 +90,22 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       return;
     }
 
+    isRequestingLocation.current = true;
     setIsLoadingLocation(true);
     setLocationError(null);
+    
+    // Clear any existing error timeout
+    if (errorTimeoutRef.current) {
+      clearTimeout(errorTimeoutRef.current);
+      errorTimeoutRef.current = null;
+    }
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
         handleLocationSelect(latitude, longitude);
         setIsLoadingLocation(false);
+        isRequestingLocation.current = false;
         toast({
           title: "Location Obtained",
           description: "Your current location has been set on the map.",
@@ -86,6 +113,8 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       },
       (error) => {
         setIsLoadingLocation(false);
+        isRequestingLocation.current = false;
+        
         let errorMessage = "Unable to get your location.";
         
         switch (error.code) {
@@ -101,6 +130,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
         }
         
         setLocationError(errorMessage);
+        
+        // Set a timeout to clear the error after 10 seconds to prevent permanent jittering
+        errorTimeoutRef.current = setTimeout(() => {
+          setLocationError(null);
+          errorTimeoutRef.current = null;
+        }, 10000);
+        
         toast({
           title: "Location Error",
           description: errorMessage + " You can click on the map to set location manually.",
@@ -109,18 +145,33 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
       },
       {
         enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000
+        timeout: 15000, // Increased timeout
+        maximumAge: 300000 // 5 minutes cache
       }
     );
-  }, [handleLocationSelect, toast]);
+  }, [handleLocationSelect, toast, isLoadingLocation]);
 
-  // Auto-get location on component mount if no initial position
+  // Auto-get location on component mount if no initial position (only once)
   useEffect(() => {
-    if (!initialPosition && !position) {
-      getCurrentLocation();
+    if (!initialPosition && !position && !hasAutoTriedLocation.current) {
+      hasAutoTriedLocation.current = true;
+      // Small delay to prevent immediate execution during render
+      const timer = setTimeout(() => {
+        getCurrentLocation();
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
-  }, [initialPosition, position, getCurrentLocation]);
+  }, []); // Empty dependency array to run only once
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (errorTimeoutRef.current) {
+        clearTimeout(errorTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <Card className={className}>
@@ -132,10 +183,10 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             variant="outline"
             size="sm"
             onClick={getCurrentLocation}
-            disabled={isLoadingLocation}
-            className="flex items-center gap-2"
+            disabled={isLoadingLocation || isRequestingLocation.current}
+            className="flex items-center gap-2 min-w-[140px]"
           >
-            <Crosshair className="h-4 w-4" />
+            <Crosshair className={`h-4 w-4 ${isLoadingLocation ? 'animate-spin' : ''}`} />
             {isLoadingLocation ? "Getting Location..." : "Use My Location"}
           </Button>
         </div>
@@ -171,13 +222,13 @@ const LocationPicker: React.FC<LocationPickerProps> = ({
             </div>
           </div>
 
-          {/* Error state */}
-          {locationError && (
+          {/* Error state - only show if there's an error and we're not currently loading */}
+          {locationError && !isLoadingLocation && (
             <div className="absolute bottom-2 left-2 right-2 z-[1000]">
-              <div className="bg-red-50 border border-red-200 rounded-md p-2">
+              <div className="bg-red-50 border border-red-200 rounded-md p-2 shadow-sm">
                 <div className="flex items-center gap-2 text-sm text-red-700">
-                  <AlertCircle className="h-4 w-4" />
-                  {locationError}
+                  <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                  <span>{locationError}</span>
                 </div>
               </div>
             </div>

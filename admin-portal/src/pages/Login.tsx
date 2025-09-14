@@ -1,12 +1,12 @@
 // src/pages/Login.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, AlertCircle } from "lucide-react";
+import { Shield, AlertCircle, Users } from "lucide-react";
 import { toast } from "sonner";
 
 // TODO: Switch to live API by changing the import to '@/lib/api' and the function to 'apiFetch'
@@ -20,6 +20,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  // Clear any existing authentication data when login page loads
+  useEffect(() => {
+    localStorage.removeItem("auth_token");
+    localStorage.clear(); // Clear all cached data
+  }, []);
 
   const mutation = useMutation<AuthResponse, Error, { email: string; password: string }>({
     // TODO: When switching to live API, this becomes:
@@ -39,6 +45,11 @@ export default function Login() {
     }
   });
 
+  const handleSwitchToCitizenPortal = () => {
+    // Navigate to citizen portal live demo
+    window.location.href = 'https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app/login';
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     mutation.mutate({ email, password });
@@ -49,7 +60,7 @@ export default function Login() {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <div className="flex items-center justify-center mb-4">
-            <Shield className="h-12 w-12 text-primary" />
+            <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-12 w-12" />
           </div>
           <h1 className="text-3xl font-bold text-foreground">SEWASETU</h1>
           <p className="text-lg text-muted-foreground">Admin Portal</p>
@@ -75,6 +86,26 @@ export default function Login() {
             </form>
           </CardContent>
         </Card>
+        
+        {/* Portal Switcher */}
+        <Card className="bg-muted/30">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground mb-3">
+                Are you a citizen looking to report issues?
+              </p>
+              <Button 
+                variant="outline" 
+                onClick={handleSwitchToCitizenPortal}
+                className="w-full flex items-center justify-center space-x-2"
+              >
+                <Users className="h-4 w-4" />
+                <span>Switch to Citizen Portal</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        
          <Card className="bg-accent/20 border-accent">
           <CardContent className="pt-6">
             <div className="flex items-start gap-3">

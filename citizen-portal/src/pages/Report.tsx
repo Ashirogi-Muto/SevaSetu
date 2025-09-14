@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
-import { Send, ArrowLeft } from "lucide-react";
+import { Send, ArrowLeft, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/Layout";
@@ -25,6 +25,14 @@ const reportSchema = z.object({
     ),
 });
 
+// Create a type that ensures all required fields are present
+type ValidatedReportData = {
+  description: string;
+  latitude: number;
+  longitude: number;
+  file?: FileList;
+};
+
 const Report = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -41,15 +49,42 @@ const Report = () => {
   const { formState: { isSubmitting } } = form;
 
   const handleLocationSelect = (lat: number, lng: number) => {
-    form.setValue("latitude", parseFloat(lat.toFixed(6)));
-    form.setValue("longitude", parseFloat(lng.toFixed(6)));
+    const latitude = parseFloat(lat.toFixed(6));
+    const longitude = parseFloat(lng.toFixed(6));
+    
+    // Batch the form updates to prevent multiple re-renders
+    form.setValue("latitude", latitude, { shouldValidate: false });
+    form.setValue("longitude", longitude, { shouldValidate: false });
+    
     // Clear any existing location validation errors
     form.clearErrors(["latitude", "longitude"]);
+    
+    // Trigger validation for the location fields after setting values
+    setTimeout(() => {
+      form.trigger(["latitude", "longitude"]);
+    }, 0);
   };
 
   const onSubmit = async (values: z.infer<typeof reportSchema>) => {
+    // Ensure all required fields are present for TypeScript
+    if (!values.description || values.latitude === undefined || values.longitude === undefined) {
+      toast({
+        title: "Validation Error",
+        description: "Please fill in all required fields including location.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      await submitNewReport(values);
+      const reportData = {
+        description: values.description,
+        latitude: values.latitude,
+        longitude: values.longitude,
+        file: values.file
+      };
+      
+      await submitNewReport(reportData);
       toast({
         title: "Report Submitted Successfully",
         description: "Thank you for helping improve your community.",
@@ -136,10 +171,15 @@ const Report = () => {
                       [form.watch("latitude"), form.watch("longitude")] : undefined
                     }
                   />
-                  {(form.formState.errors.latitude || form.formState.errors.longitude) && (
-                    <p className="text-sm font-medium text-destructive">
-                      {form.formState.errors.latitude?.message || form.formState.errors.longitude?.message}
-                    </p>
+                  {/* Only show validation errors if the form has been touched and has errors */}
+                  {(form.formState.errors.latitude || form.formState.errors.longitude) && 
+                   (form.formState.touchedFields.latitude || form.formState.touchedFields.longitude) && (
+                    <div className="bg-red-50 border border-red-200 rounded-md p-3">
+                      <p className="text-sm font-medium text-destructive flex items-center gap-2">
+                        <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                        {form.formState.errors.latitude?.message || form.formState.errors.longitude?.message}
+                      </p>
+                    </div>
                   )}
                 </div>
 

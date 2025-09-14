@@ -54,16 +54,52 @@ export const fetchReports = async (): Promise<Report[]> => {
         return []; 
     }
 
-    const response = await fetch(`${API_URL}/api/reports`, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-        },
-    });
+    try {
+        const response = await fetch(`${API_URL}/api/reports`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch reports');
+        if (!response.ok) {
+            if (response.status === 401) {
+                // Remove invalid token
+                localStorage.removeItem('authToken');
+                throw new Error('Authentication failed. Please log in again.');
+            }
+            throw new Error(`Failed to fetch reports: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Validate and clean the data
+        if (!Array.isArray(data)) {
+            throw new Error('Invalid response format: expected array');
+        }
+        
+        // Ensure each report has the required properties
+        const validReports = data.map((report: any) => ({
+            id: report.id || 'unknown',
+            description: report.description || 'No description',
+            status: ['Pending', 'In Progress', 'Resolved'].includes(report.status) 
+                ? report.status 
+                : 'Pending',
+            submittedDate: report.submittedDate || new Date().toISOString(),
+            imageUrl: report.imageUrl,
+            location: report.location && 
+                     typeof report.location.latitude === 'number' && 
+                     typeof report.location.longitude === 'number'
+                ? report.location 
+                : undefined
+        }));
+        
+        return validReports;
+    } catch (error) {
+        if (error instanceof Error) {
+            throw error;
+        }
+        throw new Error('Network error: Failed to fetch reports');
     }
-    return response.json();
 };
 
 export const submitNewReport = async (values: ReportPayload) => {

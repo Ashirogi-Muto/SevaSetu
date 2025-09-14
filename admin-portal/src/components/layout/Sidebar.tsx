@@ -38,12 +38,15 @@ export function Sidebar({ collapsed, setCollapsed }: SidebarProps) {
       <div className="flex items-center justify-between p-4 border-b">
         {!collapsed && (
           <div className="flex items-center space-x-2 overflow-hidden">
-            <Shield className="h-8 w-8 text-primary flex-shrink-0" />
+            <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-8 w-8 flex-shrink-0" />
             <div>
               <h1 className="text-lg font-semibold text-foreground truncate">SEWASETU</h1>
               <p className="text-xs text-muted-foreground">Admin Portal</p>
             </div>
           </div>
+        )}
+        {collapsed && (
+          <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-8 w-8" />
         )}
         <Button
           variant="ghost"

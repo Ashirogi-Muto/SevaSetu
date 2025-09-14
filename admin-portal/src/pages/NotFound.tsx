@@ -16,7 +16,7 @@ const NotFound = () => {
       <Card className="w-full max-w-md text-center">
         <CardHeader>
           <div className="flex justify-center mb-4">
-            <Shield className="h-16 w-16 text-primary" />
+            <img src="/favicon-32x32.png" alt="SEWASETU Logo" className="h-16 w-16" />
           </div>
           <CardTitle className="text-4xl font-bold mb-2">404</CardTitle>
           <CardTitle className="text-xl">Page Not Found</CardTitle>

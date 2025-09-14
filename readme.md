@@ -9,11 +9,9 @@ You can access the live, deployed application here:
 * **Citizen Portal**: [https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app](https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app)
 * **Admin Portal**: [https://admin-portal-git-main-idkanythinghelps-projects.vercel.app](https://admin-portal-git-main-idkanythinghelps-projects.vercel.app)
 
-You can access the live, deployed application here:
+> **🔄 Portal Switching**: Both portals include seamless navigation between citizen and admin interfaces. Users can easily switch contexts based on their role and needs.
 
-**Citizen Portal:** https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app
 
-**Admin Portal:** https://admin-portal-git-main-idkanythinghelps-projects.vercel.app
 
 ## ✨ Features Included
 
@@ -21,23 +19,30 @@ You can access the live, deployed application here:
 - Interactive location picker with maps
 - Report submission with image upload
 - User authentication and report tracking
+- Cross-portal navigation to admin portal
+- PWA-ready with app icons and branding
 
 ### ✅ Admin Portal
 - Complete departments CRUD management
 - Location-based report filtering (10km radius)
 - Advanced filtering (status, category, department)
 - Analytics dashboard with KPIs
+- Cross-portal navigation to citizen portal
+- Forced fresh login for enhanced security
 
 ### ✅ Backend Features
 - Department management API
 - Geographic distance filtering
 - AI-powered report classification
 - User authentication with JWT
+- Production-ready with cleaned codebase
 
 ### ✅ Branding & UX
 - Complete SEWASETU branding across all portals
+- Custom logos and favicons implemented
 - Government UX4G design standards
 - Responsive design for all devices
+- Progressive Web App (PWA) support
 
 ## 🛠️ Tech Stack
 
@@ -162,9 +167,16 @@ npm run dev
 
 ## 🌐 Deployment
 
-This project is configured for easy deployment on modern hosting platforms.
+This project is configured for easy deployment on modern hosting platforms and is **production-ready** with cleaned codebase.
 
-- **Frontend Portals** (admin-portal, citizen-portal): Deployed on Vercel.
+- **Frontend Portals** (admin-portal, citizen-portal): Deployed on Vercel with PWA support.
 - **Backend Services** (backend, ai_model_server): Deployed on Railway or Render.
+
+**Production Features:**
+- Optimized build configurations
+- Environment-specific settings
+- Clean codebase without debug artifacts
+- Security headers and CORS configuration
+- Custom branding and favicon support
 
 For a detailed, step-by-step guide on deploying this application, please see the `DEPLOYMENT.md` file.

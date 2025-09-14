@@ -34,7 +34,7 @@ const Login = () => {
 
   const handleSwitchToAdminPortal = () => {
     // Navigate to admin portal live demo
-    window.location.href = 'https://admin-portal-git-main-idkanythinghelps-projects.vercel.app/login';
+    window.location.href = 'https://admin-portal-git-main-idkanythinghelps-projects.vercel.app';
   };
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {

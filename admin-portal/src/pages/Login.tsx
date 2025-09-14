@@ -47,7 +47,7 @@ export default function Login() {
 
   const handleSwitchToCitizenPortal = () => {
     // Navigate to citizen portal live demo
-    window.location.href = 'https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app/login';
+    window.location.href = 'https://citizen-portal-git-main-idkanythinghelps-projects.vercel.app';
   };
 
   const handleSubmit = (e: React.FormEvent) => {

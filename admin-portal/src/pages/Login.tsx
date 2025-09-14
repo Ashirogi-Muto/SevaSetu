@@ -113,7 +113,7 @@ export default function Login() {
               <div>
                 <p className="text-sm font-medium">Demo Credentials</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Email: admin@sevasetu.gov<br />
+                  Email: admin@sewasetu.gov<br />
                   Password: admin123
                 </p>
               </div>
